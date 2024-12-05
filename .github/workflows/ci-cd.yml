@@ -9,68 +9,48 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
-
       - name: Install dependencies
         run: pip install -r requirements.txt
-
       - name: Run tests
-        run: python -m unittest test_main.py  # Assuming test_main.py exists
+        run: python -m unittest test_main.py
 
 
-  build-and-push-image:
+  build-and-push:
     runs-on: ubuntu-latest
     needs: build-and-test
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build Docker image
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
         run: docker build -t ivanovspb/cdci/my-python-app:latest .
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          registry: docker.pkg.github.com
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.DOCKER_TOKEN }} # Use a descriptive name
-
-      - name: Push Docker image
-        run: docker push docker.pkg.github.com/ivanovspb/cdci/my-python-app:latest
-
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-and-push-image
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Use Docker Build Cache (optional but recommended)
-        id: build-cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-
-      - name: Login to Docker Hub (optional, but recommended to avoid credential repetition)
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Push the Docker image
+        run: docker push docker.pkg.github.com/ivanovspb/cdci/my-python-app:latest
 
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Dependencies (Optional - if needed in deploy step)
+        run: pip install -r requirements.txt
+      - name: Login to Docker Hub (for deploy - optional, but recommended for security)
+        uses: docker/login-action@v2
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.DOCKER_TOKEN }}
       - name: Deploy to Docker Host
         run: |
           docker pull docker.pkg.github.com/ivanovspb/cdci/my-python-app:latest
