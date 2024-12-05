@@ -42,10 +42,9 @@ jobs:
           docker build -t docker.pkg.github.com/ivanovspb/cdci:latest .
           docker tag docker.pkg.github.com/ivanovspb/cdci:latest docker.pkg.github.com/ivanovspb/cdci:latest
       - name: Push to docker hub :latest
-        if: success()
         uses: actions-hub/docker@master
         with:
-          args: push docker.pkg.github.com/${{ github.repository }}:latest
+          args: push ${GITHUB_REPOSITORY}:latest
 
   deploy:
     runs-on: ubuntu-latest
