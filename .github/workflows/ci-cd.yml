@@ -41,10 +41,7 @@ jobs:
         run: |
           docker build -t docker.pkg.github.com/ivanovspb/cdci:latest .
           docker tag docker.pkg.github.com/ivanovspb/cdci:latest docker.pkg.github.com/ivanovspb/cdci:latest
-      - name: Push to docker hub :latest
-        uses: actions-hub/docker@master
-        with:
-          args: push ${GITHUB_REPOSITORY}:latest
+          docker push docker.pkg.github.com/ivanovspb/cdci:latest
 
   deploy:
     runs-on: ubuntu-latest
