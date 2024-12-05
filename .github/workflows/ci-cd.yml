@@ -49,7 +49,7 @@ jobs:
       url: https://example.com
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Deploy to Docker Host
         uses: appleboy/ssh-action@v3
