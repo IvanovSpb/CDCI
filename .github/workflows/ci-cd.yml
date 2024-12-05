@@ -39,10 +39,10 @@ jobs:
 
       - name: Build and tag image
         run: |
-          docker build -t ivanovspb/cdci:${{ github.sha }} .
-          docker tag ivanovspb/cdci:${{ github.sha }} docker.pkg.github.com/ivanovspb/cdci:${{ github.sha }}
+          docker build -t ivanovspb/cdci:latest .
+          docker tag ivanovspb/cdci:latest docker.pkg.github.com/ivanovspb/cdci:latest
       - name: Push to Docker registry
-        run: docker push docker.pkg.github.com/ivanovspb/cdci:${{ github.sha }}
+        run: docker push docker.pkg.github.com/ivanovspb/cdci:latest
 
   deploy:
     runs-on: ubuntu-latest
