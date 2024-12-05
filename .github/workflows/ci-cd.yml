@@ -1,4 +1,3 @@
-name: CI/CD Pipeline with Docker Deploy
 
 on:
   push:
@@ -40,8 +39,11 @@ jobs:
       - name: Build and tag image
         run: |
           docker build -t docker.pkg.github.com/ivanovspb/cdci:latest .
-          docker tag ivanovspb/cdci ivanovspb/cdci/myimage
-          docker push ivanovspb/cdci/myimage
+          docker tag docker.pkg.github.com/ivanovspb/cdci:latest docker.pkg.github.com/ivanovspb/cdci:latest
+      - name: Push to docker hub :latest
+        uses: actions-hub/docker@master
+        with:
+          args: push ${GITHUB_REPOSITORY}:latest
 
   deploy:
     runs-on: ubuntu-latest
