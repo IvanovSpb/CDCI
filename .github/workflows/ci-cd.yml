@@ -39,7 +39,7 @@ jobs:
         with:
           registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }} # Use a descriptive name
+          password: ${{ secrets.DOCKER_TOKEN }} # Use a descriptive name
 
       - name: Push Docker image
         run: docker push docker.pkg.github.com/ivanovspb/cdci/my-python-app:latest
@@ -69,7 +69,7 @@ jobs:
         with:
           registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Deploy to Docker Host
         run: |
