@@ -3,7 +3,7 @@ name: CI/CD Pipeline with Docker Deploy
 on:
   push:
     branches:
-      - main  # Use main instead of master
+      - master
 
 jobs:
   build-and-test:
