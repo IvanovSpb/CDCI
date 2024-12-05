@@ -39,8 +39,8 @@ jobs:
 
       - name: Build and tag image
         run: |
-          docker build -t ivanovspb/cdci:latest .
-          docker tag ivanovspb/cdci:latest docker.pkg.github.com/ivanovspb/cdci:latest
+          docker build -t docker.pkg.github.com/ivanovspb/cdci:latest .
+          docker tag docker.pkg.github.com/ivanovspb/cdci:latest docker.pkg.github.com/ivanovspb/cdci:latest
       - name: Push to Docker registry
         run: docker push docker.pkg.github.com/ivanovspb/cdci:latest
 
