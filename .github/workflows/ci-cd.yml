@@ -37,14 +37,12 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build image
-        run: docker build -t ${{ github.repository }}:${{ github.sha }} .
-
-      - name: Push to Docker registry
+      - name: Build and tag image
         run: |
-          docker tag ${{ github.repository }}:${{ github.sha }} docker.pkg.github.com/${{ github.repository }}:${{ github.sha }}
-          docker push docker.pkg.github.com/${{ github.repository }}:${{ github.sha }}
-
+          docker build -t ivanovspb/cdci:${{ github.sha }} .
+          docker tag ivanovspb/cdci:${{ github.sha }} docker.pkg.github.com/IvanovSpb/CDCI:${{ github.sha }}
+      - name: Push to Docker registry
+        run: docker push docker.pkg.github.com/IvanovSpb/CDCI:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
