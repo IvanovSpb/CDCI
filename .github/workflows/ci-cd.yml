@@ -41,7 +41,7 @@ jobs:
         run: docker build -t ivanovspb/cdci:latest .
 
       - name: Push the Docker image
-        run: docker push docker.pkg.github.com/ivanovspb/cdci:latest
+        run: docker push docker.io/library/cd:latest
 
   deploy:
     runs-on: ubuntu-latest
